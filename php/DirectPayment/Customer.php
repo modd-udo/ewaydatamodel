@@ -182,4 +182,24 @@ class Customer implements JsonSerializable {
         $o[ucfirst($key)] = $value;
     return $o;
   }
+
+  static function fromJson($json) {
+    if(is_object($json))
+      $json = (array)$json;
+    elseif(!is_array($json))
+      $json = json_decode($json, JSON_OBJECT_AS_ARRAY);
+    else
+      throw new \Exception("Unable to determine JSON Data type");
+
+    $res = new self();
+    foreach($res as $key => $value)
+      if (isset($json[ucfirst($key)]) && $json[ucfirst($key)])
+        if($key == "cartDetails"){
+          $res->$key = CardDetails::fromJson($json[ucfirst($key)]);
+        } else {
+          $res->$key = $json[ucfirst($key)];
+        }
+    return $res;
+  }
+
 }
