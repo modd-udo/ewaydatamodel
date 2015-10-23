@@ -110,4 +110,25 @@ class CardDetails implements JsonSerializable {
         $o[ucfirst($key)] = $value;
     return $o;
   }
+
+  /**
+   * @param array|string $json
+   * @return CardDetails
+   * @throws \Exception
+   */
+  static function fromJson($json) {
+    if(is_object($json))
+      $json = (array)$json;
+    elseif(!is_array($json))
+      $json = json_decode($json, JSON_OBJECT_AS_ARRAY);
+    else
+      throw new \Exception("Unable to determine JSON Data type");
+
+    $res = new self();
+    foreach($res as $key => $value)
+      if(isset($json[ucfirst($key)]) && $json[ucfirst($key)])
+        $res->$key = $json[ucfirst($key)];
+    return $res;
+  }
+
 }
