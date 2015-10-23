@@ -4,67 +4,35 @@ namespace Modd\EWay\DirectPayment;
 use JsonSerializable;
 
 /**
- * Class Customer
- * This set of fields contains the details of the merchant’s customer.
- * These are used when creating and updating Token customers.
+ * Class Shipping Address
+ *
+ * The ShippingAddress section is optional. It is used by Beagle Fraud Alerts
+ * (Enterprise) to calculate a risk score for this transaction.
  * @package Modd\EWay
  * @author Chris Seufert <chris@modd.com.au>
  * @link https://eway.io/api-v3/#direct-connection
  */
-class Customer implements JsonSerializable {
+class ShippingAddress implements JsonSerializable {
 
   /**
-   * An eWAY issued ID that represents the Token customer to be loaded for this action.
-   * Required for UpdateTokenCustomer method
-   * @var int
-   */
-  public $tokenCustomerID;
-
-  /**
-   * The merchant’s reference for this customer (optional)
-   * @var string
-   * @maxlength 50
-   */
-  public $reference;
-
-  /**
-   * The customer’s title, empty string allowed.
-   * _One of: Mr., Ms., Mrs., Miss, Dr., Sir., Prof._
+   * The method used to ship the customer’s order
    *
-   * **When creating a new Token customer, this field is required**
+   * __One of: Unknown, LowCost, DesignatedByCustomer, International, Military, NextDay, StorePickup, TwoDayService, ThreeDayService, Other___
    * @var string
    */
-  public $title;
+  public $shippingMethod;
 
   /**
    * The customer’s first name
-   *
-   * **When creating a new Token customer, this field is required**
-   *
    * @var string
    */
   public $firstName;
 
   /**
    * The customer’s last name
-   *
-   * **When creating a new Token customer, this field is required**
-   *
    * @var string
    */
   public $lastName;
-
-  /**
-   * The customer’s company name
-   * @var string
-   */
-  public $companyName;
-
-  /**
-   * The customer’s job description / title
-   * @var string
-   */
-  public $jobDescription;
 
   /**
    * The customer’s street address
@@ -125,32 +93,7 @@ class Customer implements JsonSerializable {
    * The customer’s fax number
    * @var string
    */
-  public $mobile;
-
-  /**
-   * Any comments the merchant wishes to add about the customer
-   * @var string
-   */
-  public $comments;
-
-  /**
-   * The customer’s fax number
-   * @var string
-   */
   public $fax;
-
-  /**
-   * The customer’s website URL, which must be correctly formatted if present
-   * @var string
-   */
-  public $url;
-
-  /**
-   * The card details section is within the Customer section and is used to
-   * pass the customer’s card details for the transaction.
-   * @var CardDetails
-   */
-  public $cardDetails;
 
   function jsonSerialize() {
     $o = [];
