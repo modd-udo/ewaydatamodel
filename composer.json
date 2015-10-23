@@ -1,0 +1,22 @@
+{
+  "name": "modd-udo/ewaydatamodel",
+  "description": "PHP Class implementation of EWay Data Object",
+  "type": "library",
+  "keywords": ["EWay","model"],
+  "homepage":"https://github.com/modd-udo/ewaydatamodel",
+  "license": "MIT",
+  "authors": [{
+    "name": "Chris Seufert",
+    "email": "chris@modd.com.au",
+    "role": "Developer"
+  }],
+  "require": {
+    "php": ">=5.4.0",
+    "eway/eway-rapid-php":"1.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Modd\\EWay\\": "php/"
+    }
+  }
+}
