@@ -138,7 +138,11 @@ class DirectPayment implements JsonSerializable {
   public $transactionType = self::TYPE_PURCHASE;
 
   function jsonSerialize() {
-
+    $o = [];
+    foreach($this as $key => $value)
+      if(isset($this->$key))
+        $o[ucfirst($key)] = $value;
+    return $o;
   }
 
 }
