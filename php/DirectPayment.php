@@ -11,9 +11,34 @@ use JsonSerializable;
  */
 class DirectPayment implements JsonSerializable {
 
+  /**
+   * This set of fields contains the details of the merchant’s customer.
+   * These are used when creating and updating Token customers.
+   * @var DirectPayment\Customer
+   */
   public $customer;
+
+  /**
+   * The ShippingAddress section is optional. It is used by Beagle Fraud Alerts
+   * (Enterprise) to calculate a risk score for this transaction.
+   * @var DirectPayment\ShippingAddress
+   */
   public $shippingAddress;
+
+  /**
+   * The Items section is optional. If provided, it should contain a list of
+   * line items purchased by the customer, up to a maximum of 99 items. It is
+   * used by Beagle Fraud Alerts (Enterprise) to calculate a risk score for
+   * this transaction.
+   * @var DirectPayment\Item[]
+   */
   public $items;
+  /**
+   * This section is optional. Anything appearing in this section is not
+   * displayed to the customer. Up to 99 options can be defined.
+   * Each option has just one field
+   * @var DirectPayment\Option[]
+   */
   public $options;
 
   /**

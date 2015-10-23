@@ -101,6 +101,9 @@ class Customer implements JsonSerializable {
    *
    * This should be the two letter ISO 3166-1 alpha-2 code. This field must
    * be lower case. __e.g. Australia = au__
+   *
+   * __When this field is present, along with the customer’s IP address,
+   * any transaction will be processed using Beagle__
    * @var string
    * @link https://www.iso.org/obp/ui/#search/code/
    */
@@ -141,6 +144,13 @@ class Customer implements JsonSerializable {
    * @var string
    */
   public $url;
+
+  /**
+   * The card details section is within the Customer section and is used to
+   * pass the customer’s card details for the transaction.
+   * @var CardDetails
+   */
+  public $cardDetails;
 
   function jsonSerialize() {
     $o = [];
