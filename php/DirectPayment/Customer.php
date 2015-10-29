@@ -187,7 +187,7 @@ class Customer implements JsonSerializable {
     $res = new self();
     foreach($res as $key => $value)
       if (isset($arr[ucfirst($key)]) && $arr[ucfirst($key)])
-        if($key == "cartDetails"){
+        if($key == "cardDetails"){
           $res->$key = CardDetails::fromArray($arr[ucfirst($key)]);
         } else {
           $res->$key = $arr[ucfirst($key)];
