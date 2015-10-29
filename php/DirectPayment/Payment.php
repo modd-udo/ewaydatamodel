@@ -41,7 +41,7 @@ class Payment implements JsonSerializable {
    * UpdateTokenCustomer methods
    * @var int
    */
-  public $totalPayment = 0;
+  public $totalAmount = 0;
 
   /**
    * The merchant’s invoice number for this transaction (optional) (max 12 chars)
