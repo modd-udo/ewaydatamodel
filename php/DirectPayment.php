@@ -119,9 +119,8 @@ class DirectPayment implements JsonSerializable {
   public $customerIP;
 
   /**
-   * __Rapid Libraries Only__ Set to true to capture funds immediately (default),
+   * @var boolean __Rapid Libraries Only__ Set to true to capture funds immediately (default),
    * set to false to perform an authorisation and only hold funds. (optional)
-   * @var boolean
    */
   public $capture;
 

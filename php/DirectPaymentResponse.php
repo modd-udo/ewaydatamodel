@@ -118,30 +118,23 @@ class DirectPaymentResponse implements JsonSerializable {
   }
 
   /**
-   * @param string|array $json
+   * @param array $arr
    * @return DirectPaymentResponse
    * @throws \Exception
    */
-  static function fromJson($json) {
-    if(is_object($json))
-      $json = (array)$json;
-    elseif(!is_array($json))
-      $json = json_decode($json, JSON_OBJECT_AS_ARRAY);
-    else
-      throw new \Exception("Unable to determine JSON Data type");
-
+  static function fromArray($arr) {
     $res = new self();
     foreach(['authorisationCode','responseCode','responseMessage',
             'transactionID','transactionStatus','transactionType',
             'totalAmount','beagleScore'] as $k)
-      if(isset($json[ucfirst($k)]))
-        $res->$k = $json[ucfirst($k)];
-    if(isset($json['Errors']) && $json['Errors'])
-      $res->errors = explode(',',$json['Errors']);
-    if(isset($json['Payment']) && $json['Payment'])
-      $res->payment = DirectPayment\Payment::fromJson($json['Payment']);
-    if(isset($json['Customer']) && $json['Customer'])
-      $res->customer = DirectPayment\Customer::fromJson($json['Customer']);
+      if(isset($arr[ucfirst($k)]))
+        $res->$k = $arr[ucfirst($k)];
+    if(isset($arr['Errors']) && $arr['Errors'])
+      $res->errors = explode(',',$arr['Errors']);
+    if(isset($arr['Payment']) && $arr['Payment'])
+      $res->payment = DirectPayment\Payment::fromArray($arr['Payment']);
+    if(isset($arr['Customer']) && $arr['Customer'])
+      $res->customer = DirectPayment\Customer::fromArray($arr['Customer']);
     return $res;
   }
 
