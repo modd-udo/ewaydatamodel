@@ -56,7 +56,7 @@ class DirectPaymentResponse implements JsonSerializable {
    * A unique identifier that represents the transaction in eWAY’s system
    * @var int
    */
-  public $transactionId;
+  public $transactionID;
 
   /**
    * A Boolean value that indicates whether the transaction was successful or not
