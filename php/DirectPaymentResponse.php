@@ -126,9 +126,11 @@ class DirectPaymentResponse implements JsonSerializable {
     $res = new self();
     foreach(['authorisationCode','responseCode','responseMessage',
             'transactionID','transactionStatus','transactionType',
-            'totalAmount','beagleScore'] as $k)
-      if(isset($arr[ucfirst($k)]))
-        $res->$k = $arr[ucfirst($k)];
+            'beagleScore'] as $prop) {
+      $key = ucfirst($prop);
+      if(isset($arr[$key]))
+        $res->$prop = $arr[$key];
+    }
     if(isset($arr['Errors']) && $arr['Errors'])
       $res->errors = explode(',',$arr['Errors']);
     if(isset($arr['Payment']) && $arr['Payment'])
