@@ -78,43 +78,6 @@ class RefundResponse implements JsonSerializable {
    */
   public $refund;
 
-  const METHOD_PAYMENT = "ProcessPayment";
-  const METHOD_CREATETOKEN = "CreateTokenCustomer";
-  const METHOD_UPDATETOKEN = "UpdateTokenCustomer";
-  const METHOD_TOKENPAYMENT = "TokenPayment";
-  const METHOD_AUTHORISE = "Authorise";
-
-  /**
-   * The action to perform with this request (see Payment Methods
-   * for more information).
-   * One of: METHOD_PAYMENT, METHOD_CREATETOKEN, METHOD_UPDATETOKEN,
-   * METHOD_TOKENPAYMENT, METHOD_AUTHORISE
-   * @var string
-   * @link https://eway.io/api-v3/#payment-methods
-   */
-  public $method = self::METHOD_PAYMENT;
-
-  /**
-   * @var string The identification name/number for the device or application
-   * used to process the transaction. (optional) Max 50 chars.
-   */
-  public $deviceID;
-
-  /**
-   * The partner ID generated from an eWAY partner agreement
-   * (optional) Max 50 Chars
-   * @var string
-   */
-  public $partnerID;
-
-  /**
-   * The wallet ID of a third party wallet used for a payment.
-   * Currently used for Visa Checkout transactions.
-   * @var string
-   * @link https://eway.io/api-v3/#integration-steps-direct-api
-   */
-  public $thirdPartyWalletID;
-
   /**
    * The customer's IP address. (optional)
    *
@@ -125,10 +88,10 @@ class RefundResponse implements JsonSerializable {
   public $customerIP;
 
   /**
-   * A comma separated list of any error encountered, these can be looked up
-   * in the Response Codes section. (Max 512 bytes)
+   * A comma separated list of any error encountered (exploded to array),
+   * these can be looked up in the Response Codes section. (Max 512 bytes)
    *
-   * @var string
+   * @var array
    */
   public $errors;
 
@@ -138,6 +101,28 @@ class RefundResponse implements JsonSerializable {
       if(isset($this->$key))
         $o[ucfirst($key)] = $value;
     return $o;
+  }
+
+  /**
+   * @param array $arr
+   * @return RefundResponse
+   * @throws \Exception
+   */
+  static function fromArray($arr) {
+    $res = new self();
+    foreach(['authorisationCode','responseCode','responseMessage',
+              'transactionID','transactionStatus'] as $prop) {
+      $key = ucfirst($prop);
+      if(isset($arr[$key]))
+        $res->$prop = $arr[$key];
+    }
+    if(isset($arr['Errors']) && $arr['Errors'])
+      $res->errors = explode(',',$arr['Errors']);
+    if(isset($arr['Payment']) && $arr['Payment'])
+      $res->refund = Refund\Refund::fromArray($arr['Refund']);
+    if(isset($arr['Customer']) && $arr['Customer'])
+      $res->customer = DirectPayment\Customer::fromArray($arr['Customer']);
+    return $res;
   }
 
 }
