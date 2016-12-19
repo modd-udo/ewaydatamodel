@@ -27,12 +27,12 @@ namespace Modd\EWay;
 use JsonSerializable;
 
 /**
- * Class DirectPayment
+ * Class Refund
  * @package Modd\EWay
  * @author Chris Seufert <chris@modd.com.au>
  * @link https://eway.io/api-v3/#direct-connection
  */
-class DirectPayment implements JsonSerializable {
+class Refund implements JsonSerializable {
 
   /**
    * This set of fields contains the details of the merchant's customer.
@@ -68,25 +68,9 @@ class DirectPayment implements JsonSerializable {
    * This set of fields contains the details of the payment being processed.
    * This section is required when the Method field is set to
    * **ProcessPayment** or **TokenPayment**.
-   * @var DirectPayment\Payment
+   * @var Refund\Refund
    */
-  public $payment;
-
-  const METHOD_PAYMENT = "ProcessPayment";
-  const METHOD_CREATETOKEN = "CreateTokenCustomer";
-  const METHOD_UPDATETOKEN = "UpdateTokenCustomer";
-  const METHOD_TOKENPAYMENT = "TokenPayment";
-  const METHOD_AUTHORISE = "Authorise";
-
-  /**
-   * The action to perform with this request (see Payment Methods
-   * for more information).
-   * One of: METHOD_PAYMENT, METHOD_CREATETOKEN, METHOD_UPDATETOKEN,
-   * METHOD_TOKENPAYMENT, METHOD_AUTHORISE
-   * @var string
-   * @link https://eway.io/api-v3/#payment-methods
-   */
-  public $method = self::METHOD_PAYMENT;
+  public $refund;
 
   /**
    * @var string The identification name/number for the device or application
@@ -102,39 +86,13 @@ class DirectPayment implements JsonSerializable {
   public $partnerID;
 
   /**
-   * The wallet ID of a third party wallet used for a payment.
-   * Currently used for Visa Checkout transactions.
-   * @var string
-   * @link https://eway.io/api-v3/#integration-steps-direct-api
-   */
-  public $thirdPartyWalletID;
-
-  /**
-   * The customer�s IP address. (optional)
+   * The customer's IP address. (optional)
    *
    * _When this field is present along with the Customer Country field,
    * any transaction will be processed using Beagle Fraud Alerts_
    * @var string
    */
   public $customerIP;
-
-  /**
-   * @var boolean __Rapid Libraries Only__ Set to true to capture funds immediately (default),
-   * set to false to perform an authorisation and only hold funds. (optional)
-   */
-  public $capture;
-
-  const TYPE_PURCHASE = "Purchase";
-  const TYPE_MOTO = "MOTO";
-  const TYPE_RECURRING = "Recurring";
-
-  /**
-   * The type of transaction you�re performing (see Transaction Types).
-   * One of: TYPE_PURCHASE, TYPE_MOTO, TYPE_RECURRING
-   * @var string
-   * @link https://eway.io/api-v3/#transaction-types
-   */
-  public $transactionType = self::TYPE_PURCHASE;
 
   function jsonSerialize() {
     $o = [];

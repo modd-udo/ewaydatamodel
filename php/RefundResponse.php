@@ -27,12 +27,41 @@ namespace Modd\EWay;
 use JsonSerializable;
 
 /**
- * Class DirectPayment
+ * Class RefundResponse
  * @package Modd\EWay
  * @author Chris Seufert <chris@modd.com.au>
  * @link https://eway.io/api-v3/#direct-connection
  */
-class DirectPayment implements JsonSerializable {
+class RefundResponse implements JsonSerializable {
+  /**
+   * The authorisation code for this transaction as returned by the bank
+   * @var string
+   */
+  public $authorisationCode;
+
+  /**
+   * The two digit response code returned from the bank
+   * @var string
+   */
+  public $responseCode;
+
+  /**
+   * A code that describes the result of the action performed
+   * @var string
+   */
+  public $responseMessage;
+
+  /**
+   * A unique identifier that represents the transaction in eWAY's system
+   * @var int
+   */
+  public $transactionID;
+
+  /**
+   * A Boolean value that indicates whether the transaction was successful or not
+   * @var boolean
+   */
+  public $transactionStatus;
 
   /**
    * This set of fields contains the details of the merchant's customer.
@@ -42,35 +71,12 @@ class DirectPayment implements JsonSerializable {
   public $customer;
 
   /**
-   * The ShippingAddress section is optional. It is used by Beagle Fraud Alerts
-   * (Enterprise) to calculate a risk score for this transaction.
-   * @var DirectPayment\ShippingAddress
-   */
-  public $shippingAddress;
-
-  /**
-   * The Items section is optional. If provided, it should contain a list of
-   * line items purchased by the customer, up to a maximum of 99 items. It is
-   * used by Beagle Fraud Alerts (Enterprise) to calculate a risk score for
-   * this transaction.
-   * @var DirectPayment\Item[]
-   */
-  public $items;
-  /**
-   * This section is optional. Anything appearing in this section is not
-   * displayed to the customer. Up to 99 options can be defined.
-   * Each option has just one field
-   * @var DirectPayment\Option[]
-   */
-  public $options;
-
-  /**
    * This set of fields contains the details of the payment being processed.
    * This section is required when the Method field is set to
    * **ProcessPayment** or **TokenPayment**.
-   * @var DirectPayment\Payment
+   * @var Refund\Refund
    */
-  public $payment;
+  public $refund;
 
   const METHOD_PAYMENT = "ProcessPayment";
   const METHOD_CREATETOKEN = "CreateTokenCustomer";
@@ -110,7 +116,7 @@ class DirectPayment implements JsonSerializable {
   public $thirdPartyWalletID;
 
   /**
-   * The customer�s IP address. (optional)
+   * The customer's IP address. (optional)
    *
    * _When this field is present along with the Customer Country field,
    * any transaction will be processed using Beagle Fraud Alerts_
@@ -119,22 +125,12 @@ class DirectPayment implements JsonSerializable {
   public $customerIP;
 
   /**
-   * @var boolean __Rapid Libraries Only__ Set to true to capture funds immediately (default),
-   * set to false to perform an authorisation and only hold funds. (optional)
-   */
-  public $capture;
-
-  const TYPE_PURCHASE = "Purchase";
-  const TYPE_MOTO = "MOTO";
-  const TYPE_RECURRING = "Recurring";
-
-  /**
-   * The type of transaction you�re performing (see Transaction Types).
-   * One of: TYPE_PURCHASE, TYPE_MOTO, TYPE_RECURRING
+   * A comma separated list of any error encountered, these can be looked up
+   * in the Response Codes section. (Max 512 bytes)
+   *
    * @var string
-   * @link https://eway.io/api-v3/#transaction-types
    */
-  public $transactionType = self::TYPE_PURCHASE;
+  public $errors;
 
   function jsonSerialize() {
     $o = [];
