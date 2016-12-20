@@ -118,7 +118,7 @@ class RefundResponse implements JsonSerializable {
     }
     if(isset($arr['Errors']) && $arr['Errors'])
       $res->errors = explode(',',$arr['Errors']);
-    if(isset($arr['Payment']) && $arr['Payment'])
+    if(isset($arr['Refund']) && $arr['Refund'])
       $res->refund = Refund\Refund::fromArray($arr['Refund']);
     if(isset($arr['Customer']) && $arr['Customer'])
       $res->customer = DirectPayment\Customer::fromArray($arr['Customer']);
